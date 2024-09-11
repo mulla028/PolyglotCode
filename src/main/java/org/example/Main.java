@@ -16,7 +16,7 @@ public class Main {
             System.exit(1);
         }
 
-        Path folderPath = Paths.get("example");
+        Path folderPath = Paths.get("examples");
 
         String result = "";
         String content = "";
