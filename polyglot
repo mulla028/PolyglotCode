@@ -19,7 +19,7 @@ if [[ "$#" -gt 0 ]]; then
     case $1 in
         -v|--version) version; exit 0 ;;
         -h|--help) help; exit 0 ;;
-    esacz
+    esac
 fi
 
 # If less than 2 arguments, show an error
