@@ -1,6 +1,7 @@
 package org.example;
 
 public class Api {
-    public static String key = "qmRSouExSRZ2JQMteCBPghbLicD27cpkKqC5p7hr";
+    // Add your Cohere API-KEY here
+    public static String key = "";
 }
 
