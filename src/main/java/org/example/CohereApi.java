@@ -35,7 +35,7 @@ public class CohereApi {
 //            System.out.println("\n" + rawResponse);
             return rawResponse;
         } else {
-            return "Request failed: " + response.code();
+            throw new Exception("Request failed: " + response.code());
         }
     }
 

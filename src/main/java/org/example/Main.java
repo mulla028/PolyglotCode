@@ -16,6 +16,7 @@ public class Main {
             System.exit(1);
         }
 
+        Path projectPath = Paths.get("").toAbsolutePath();
         Path folderPath = Paths.get("examples");
 
         String result = "";
@@ -24,13 +25,15 @@ public class Main {
         String fileName = args[0];
         String language = args[1];
 
+        Path projectFilePath = projectPath.resolve(fileName);
         Path filePath = folderPath.resolve(fileName);
 
         if (Files.exists(filePath)) {
             content = StringifyFileContents.toString(fileName, folderPath);
-//            System.out.println(content);
-        } else {
-            System.out.println("File doesn't exist");
+        } else if (Files.exists(projectFilePath)) {
+            content = StringifyFileContents.toString(fileName, projectPath);
+        }else {
+            throw new Exception("File doesn't exist");
         }
 
         result = CohereApi.callApi(content, language);
