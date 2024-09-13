@@ -33,7 +33,7 @@ public class Main {
         } else if (Files.exists(projectFilePath)) {
             content = StringifyFileContents.toString(fileName, projectPath);
         }else {
-            throw new Exception("File doesn't exist");
+            throw new Exception("File doesn't exist :c");
         }
 
         result = CohereApi.callApi(content, language);
