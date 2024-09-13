@@ -14,4 +14,47 @@
 
 # Getting Started
 
-To be continued...
+1. Generate and provide Cohere API key into the Api.java
+   ```java
+   public static String key = "YOUR_API_KEY";
+   ```
+
+2. Run Maven Package to compile the source code
+   ```
+   mvn package
+   ```
+
+# Usage
+
+```
+./polyglot <filename> <language>
+```
+
+Examples:
+
+```
+./polyglot main.cpp java
+./polyglot examples/example.py c++
+```
+
+# Different Flags
+
+### Version info
+
+This flag prints the current version of PolyglotCode and the name of the tool, usage:
+
+```
+./polyglot -v
+./polyglot --version
+```
+
+### Help
+
+This flag displays all of the details and configurations that OptimizeIt has, usage:
+
+```
+./polyglot -h
+./polyglot --help
+```
+
+
