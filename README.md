@@ -1,4 +1,4 @@
-![PolyglotCode](https://github.com/user-attachments/assets/6784a353-cc8c-42e0-85af-20e6c693f97a)
+![PolyglotCode](https://github.com/user-attachments/assets/2ee7a351-b467-4935-a189-11824cb63387)
 
 <div align="center">
 
