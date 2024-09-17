@@ -1,43 +1,111 @@
 package org.example;
 
+import picocli.CommandLine;
+import picocli.CommandLine.Option;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
+import java.util.concurrent.Callable;
+import java.util.List;
 
+@CommandLine.Command(
+        name="./polyglot",
+        version = "PolyglotCode 1.0",
+        description = "A command-line tool that helps to translate code in ANY programming language.",
+        customSynopsis = "./polyglot <files>... <language> [OPTIONS]"
+)
+public class Main implements Callable<Integer> {
 
-public class Main {
     public static final String GREEN = "\u001B[32m";
     public static final String RESET = "\u001B[0m";
 
-    public static void main(String[] args) throws Exception {
+    @CommandLine.Parameters(arity = "2..*",  description = "Enter file names to translate followed by language name you want to translate in")
+    private List<String> args;
 
-        if (args.length < 2) {
-            System.out.println("Usage: polyglot <filename> <language>");
-            System.exit(1);
-        }
+    // Flags
+    @Option(
+            names = {"-h", "--help"},
+            usageHelp = true
+    )
+    private boolean helpRequest;
+
+    @Option(
+            names = {"-v", "--version"},
+            versionHelp = true
+    )
+    private boolean versionRequested;
+
+    @Option(
+            names = {"-a", "--api-key"},
+            defaultValue = "qmRSouExSRZ2JQMteCBPghbLicD27cpkKqC5p7hr",
+            description = "Modifying api key manually"
+    )
+    private String api;
+
+    @Option(
+            names = {"-o", "--output"},
+            defaultValue = "",
+            description = "Creates output file with chosen name"
+    )
+    private String outputFile;
+
+    @Option(
+            names = {"-u", "--base-url"},
+            defaultValue = "https://api.cohere.ai/v1/chat",
+            description = "You may specify baseURL of api(not recommended)"
+    )
+    private String baseURL;
+
+
+    // Callable function
+    @Override
+    public Integer call() throws Exception {
+
+        List<String> fileNames = args.subList(0, args.size() - 1);
+        String language = args.get(args.size() - 1);
+
+        System.out.println("Files are: " + fileNames);
 
         Path projectPath = Paths.get("").toAbsolutePath();
         Path folderPath = Paths.get("examples");
 
-        String result = "";
-        String content = "";
+        for(int i = 0; i < fileNames.size(); i++) {
 
-        String fileName = args[0];
-        String language = args[1];
+            System.out.println("Attempting to translate " + fileNames.get(i) + "...");
 
-        Path projectFilePath = projectPath.resolve(fileName);
-        Path filePath = folderPath.resolve(fileName);
+            String result = "";
+            String content = "";
 
-        if (Files.exists(filePath)) {
-            content = StringifyFileContents.toString(fileName, folderPath);
-        } else if (Files.exists(projectFilePath)) {
-            content = StringifyFileContents.toString(fileName, projectPath);
-        }else {
-            throw new Exception("File doesn't exist ;c ");
+            Path projectFilePath = projectPath.resolve(fileNames.get(i));
+            Path filePath = folderPath.resolve(fileNames.get(i));
+
+            if (Files.exists(filePath)) {
+                content = StringifyFileContents.toString(fileNames.get(i), folderPath);
+            } else if (Files.exists(projectFilePath)) {
+                content = StringifyFileContents.toString(fileNames.get(i), projectPath);
+            }else {
+                throw new Exception("File doesn't exist ;c ");
+            }
+
+            result = CohereApi.callApi(content, language, api, baseURL);
+            System.out.println(GREEN + "After: \n" + RESET +  result);
+
+            if (!outputFile.equals("")) {
+                Path outputPath = Path.of(projectPath + "//" + outputFile);
+                System.out.println("Output path is: " + outputPath);
+                Files.writeString(outputPath, result);
+            }
+
         }
 
-        result = CohereApi.callApi(content, language);
-        System.out.println(GREEN + "After: \n" + RESET +  result);
+        return 1;
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        int exitCode = new CommandLine(new Main()).execute(args);
+        System.exit(exitCode);
 
     }
 }
