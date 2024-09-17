@@ -12,7 +12,7 @@ import java.util.List;
 // Declaration of picoCLI, specifying application usage
 @CommandLine.Command(
         name="./polyglot",
-        version = "PolyglotCode 1.0",
+        version = "PolyglotCode 0.1",
         description = "A command-line tool that helps to translate code in ANY programming language.",
         customSynopsis = "./polyglot <files>... <language> [OPTIONS]"
 )
@@ -43,7 +43,7 @@ public class Main implements Callable<Integer> {
     // Flags -a && --api-key to manually modify api kay
     @Option(
             names = {"-a", "--api-key"},
-            defaultValue = "",
+            defaultValue = "qmRSouExSRZ2JQMteCBPghbLicD27cpkKqC5p7hr",
             description = "Modifying api key manually"
     )
     private String api;
