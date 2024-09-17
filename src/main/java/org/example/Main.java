@@ -38,7 +38,7 @@ public class Main implements Callable<Integer> {
 
     @Option(
             names = {"-a", "--api-key"},
-            defaultValue = "qmRSouExSRZ2JQMteCBPghbLicD27cpkKqC5p7hr",
+            defaultValue = "",
             description = "Modifying api key manually"
     )
     private String api;
