@@ -1,3 +1,4 @@
+![PolyglotCode](https://github.com/user-attachments/assets/6784a353-cc8c-42e0-85af-20e6c693f97a)
 
 <div align="center">
 
@@ -12,7 +13,6 @@
 
 </div>
 
-![PolyglotCode](https://github.com/user-attachments/assets/8d1b8103-de95-4c17-9372-35ad820d779a)
 
 # Getting Started
 
