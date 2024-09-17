@@ -1,33 +1,5 @@
 #!/bin/bash
 
-# Function to display the version
-version() {
-    echo "polyglot version 0.1"
-}
-
-# Function to display help
-help() {
-    echo "Usage: polyglot [options] <filename> <language>"
-    echo ""
-    echo "Options:"
-    echo "  -v, --version   Show the version"
-    echo "  -h, --help      Show this help message"
-}
-
-# Check for options first
-if [[ "$#" -gt 0 ]]; then
-    case $1 in
-        -v|--version) version; exit 0 ;;
-        -h|--help) help; exit 0 ;;
-    esac
-fi
-
-# If less than 2 arguments, show an error
-if [[ "$#" -lt 2 ]]; then
-    echo "Error: Missing required arguments."
-    help
-    exit 1
-fi
-
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 # Run the Java program with the provided arguments
-java -jar "$(dirname "$0")/target/PolyglotCode-1.0-SNAPSHOT-shaded.jar" "$1" "$2"
+java -jar "$DIR/target/PolyglotCode-1.0-SNAPSHOT-shaded.jar" "$@"
