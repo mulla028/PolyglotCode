@@ -44,6 +44,9 @@
 
 # Usage
 
+![usageExampleGIF](https://github.com/user-attachments/assets/2a4014c1-7b51-48cc-b3cc-c642a4e34423)
+
+
 ```bash
 ./polyglot <file(s)...> <language> [OPTIONS]
 ```
