@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public class CohereApi {
 
-    public static String callApi(String content, String language) throws Exception {
+    public static String callApi(String content, String language, String api, String baseURL) throws Exception {
 
         String contentJson = JSONObject.quote(content);
 
@@ -21,9 +21,9 @@ public class CohereApi {
         RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
 
         Request request = new Request.Builder()
-                .url("https://api.cohere.ai/v1/chat")
+                .url(baseURL)
                 .post(body)
-                .addHeader("Authorization", "Bearer " + Api.key)
+                .addHeader("Authorization", "Bearer " + api)
                 .addHeader("Content-Type", "application/json")
                 .build();
 
