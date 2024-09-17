@@ -1,4 +1,4 @@
-![PolyglotCode](https://github.com/user-attachments/assets/5e39ddae-ebbf-474e-b5fc-e118604b2783)
+
 <div align="center">
 
 **A command-line tool that helps to translate code in ANY programming language**
@@ -11,6 +11,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 </div>
+
+![PolyglotCode](https://github.com/user-attachments/assets/8d1b8103-de95-4c17-9372-35ad820d779a)
 
 # Getting Started
 
