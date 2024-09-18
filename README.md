@@ -105,3 +105,11 @@ Creates the file, specified by user and writes the result there. It is highly re
 ./polyglot <file> <language> --output file.txt
 ```
 
+### Token information
+
+Displays token information, including input token number and output token number. Usage:
+
+```bash
+./polyglot <file> <language> -t
+./polyglot <file> <language> --token-usage
+```
