@@ -1,5 +1,6 @@
 package org.example;
 
+import org.json.JSONObject;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
@@ -16,6 +17,13 @@ import java.util.List;
         description = "A command-line tool that helps to translate code in ANY programming language.",
         customSynopsis = "./polyglot <files>... <language> [OPTIONS]"
 )
+
+// Define a TokenInfo class
+class TokenInfo {
+    int inputTokens;
+    int outputTokens;
+}
+
 // Callable Main class
 public class Main implements Callable<Integer> {
 
@@ -64,6 +72,13 @@ public class Main implements Callable<Integer> {
     )
     private String baseURL;
 
+    // Flags -t && --token-usage to display token information
+    @Option(
+            names = {"-t", "--token-usage"},
+            description = "Display token information"
+    )
+    private boolean tokenUsage;
+
 
     // Function to be called in main file, using for picoCLI
     @Override
@@ -80,13 +95,17 @@ public class Main implements Callable<Integer> {
         Path projectPath = Paths.get("").toAbsolutePath();
         Path folderPath = Paths.get("examples");
 
+        // Declare a new TokenInfo
+        TokenInfo tokenInfo = new TokenInfo();
+
         // For-loop
         // Works until all files are translated
         for(int i = 0; i < fileNames.size(); i++) {
 
             System.out.println("Attempting to translate " + fileNames.get(i) + "...");
 
-            String result = "";
+            JSONObject resultJSON;
+            String resultText = "";
             String content = "";
 
             // Possible file paths to search for
@@ -107,8 +126,9 @@ public class Main implements Callable<Integer> {
 
             // Invokes callApi function from CohereApi class
             // assigns the output to the result string
-            result = CohereApi.callApi(content, language, api, baseURL);
-            System.out.println(GREEN + "After: \n" + RESET +  result);
+            resultJSON = CohereApi.callApi(content, language, api, baseURL);
+            resultText = resultJSON.getString("text");
+            System.out.println(GREEN + "After: \n" + RESET + resultText);
 
             // If user specified the output file
             // The result writes to the new file
@@ -116,9 +136,21 @@ public class Main implements Callable<Integer> {
             if (!outputFile.equals("")) {
                 Path outputPath = Path.of(projectPath + "//" + outputFile);
                 System.out.println("Output path is: " + outputPath);
-                Files.writeString(outputPath, result);
+                Files.writeString(outputPath, resultText);
             }
 
+            // Extract token information from resultJSON
+            tokenInfo.inputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("input_tokens");
+            tokenInfo.outputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("output_tokens");
+        }
+
+        // If -t option is present
+        // Output token information to stderr
+        if (tokenUsage) {
+            System.err.println("\n------------------------\n" +
+                    "Token Information:\n" +
+                    "Input Tokens: " + tokenInfo.inputTokens + "\n" +
+                    "Output Tokens: " + tokenInfo.outputTokens);
         }
 
         return 1;

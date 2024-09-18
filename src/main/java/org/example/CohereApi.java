@@ -11,12 +11,11 @@ public class CohereApi {
     // language - language to translate file in
     // api - api-key
     // baseURL - baseURL default or specified by user
-    public static String callApi(String content, String language, String api, String baseURL) throws Exception {
+    public static JSONObject callApi(String content, String language, String api, String baseURL) throws Exception {
 
         // Transform content into the JSON object
         String contentJson = JSONObject.quote(content);
 
-        String rawResponse = "";
         // Create a client that sends requests to the api
         OkHttpClient client = new OkHttpClient();
 
@@ -45,10 +44,7 @@ public class CohereApi {
         // otherwise throw an exception
         if (response.isSuccessful()) {
             String responseString = response.body().string();
-            JSONObject jsonObject = new JSONObject(responseString);
-            rawResponse = jsonObject.getString("text");
-//            System.out.println("\n" + rawResponse);
-            return rawResponse;
+            return new JSONObject(responseString);
         } else {
             throw new Exception("Request failed: " + response.code() + " :c");
         }
