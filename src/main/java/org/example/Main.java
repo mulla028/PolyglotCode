@@ -18,12 +18,6 @@ import java.util.List;
         customSynopsis = "./polyglot <files>... <language> [OPTIONS]"
 )
 
-// Define a TokenInfo class
-class TokenInfo {
-    int inputTokens;
-    int outputTokens;
-}
-
 // Callable Main class
 public class Main implements Callable<Integer> {
 
@@ -95,8 +89,9 @@ public class Main implements Callable<Integer> {
         Path projectPath = Paths.get("").toAbsolutePath();
         Path folderPath = Paths.get("examples");
 
-        // Declare a new TokenInfo
-        TokenInfo tokenInfo = new TokenInfo();
+        // Declare tokens
+        int inputTokens = 0;
+        int outputTokens = 0;
 
         // For-loop
         // Works until all files are translated
@@ -140,8 +135,8 @@ public class Main implements Callable<Integer> {
             }
 
             // Extract token information from resultJSON
-            tokenInfo.inputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("input_tokens");
-            tokenInfo.outputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("output_tokens");
+            inputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("input_tokens");
+            outputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("output_tokens");
         }
 
         // If -t option is present
@@ -149,8 +144,8 @@ public class Main implements Callable<Integer> {
         if (tokenUsage) {
             System.err.println("\n------------------------\n" +
                     "Token Information:\n" +
-                    "Input Tokens: " + tokenInfo.inputTokens + "\n" +
-                    "Output Tokens: " + tokenInfo.outputTokens);
+                    "Input Tokens: " + inputTokens + "\n" +
+                    "Output Tokens: " + outputTokens);
         }
 
         return 1;
