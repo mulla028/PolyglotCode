@@ -17,7 +17,6 @@ import java.util.List;
         description = "A command-line tool that helps to translate code in ANY programming language.",
         customSynopsis = "./polyglot <files>... <language> [OPTIONS]"
 )
-
 // Callable Main class
 public class Main implements Callable<Integer> {
 
