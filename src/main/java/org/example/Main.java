@@ -144,7 +144,8 @@ public class Main implements Callable<Integer> {
             System.err.println("\n------------------------\n" +
                     "Token Information:\n" +
                     "Input Tokens: " + inputTokens + "\n" +
-                    "Output Tokens: " + outputTokens);
+                    "Output Tokens: " + outputTokens + "\n" +
+                    "Total Tokens: " + (inputTokens + outputTokens));
         }
 
         return 1;
