@@ -113,3 +113,13 @@ Displays token information, including input token number and output token number
 ./polyglot <file> <language> -t
 ./polyglot <file> <language> --token-usage
 ```
+
+### Stream result
+
+Displays result in the streaming format, as Cohere generates it displays
+
+```bash
+./polyglot <file> <language> -s
+./polyglot <file> <language> --stream
+```
+
