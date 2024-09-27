@@ -44,7 +44,7 @@ public class Main implements Callable<Integer> {
     // Flags -a && --api-key to manually modify api kay
     @Option(
             names = {"-a", "--api-key"},
-            defaultValue = "",
+            defaultValue = "I96N2q9AqvZrR3S1wcWpa8RSsiDDdnZA2By55mN7",
             description = "Modifying api key manually"
     )
     private String api;
@@ -71,6 +71,12 @@ public class Main implements Callable<Integer> {
             description = "Display token information"
     )
     private boolean tokenUsage;
+
+    @Option(
+            names = {"-s", "--stream"},
+            description = "Stream the response live as it updates."
+    )
+    private boolean stream;
 
 
     // Function to be called in main file, using for picoCLI
@@ -120,27 +126,49 @@ public class Main implements Callable<Integer> {
 
             // Invokes callApi function from CohereApi class
             // assigns the output to the result string
-            resultJSON = CohereApi.callApi(content, language, api, baseURL);
-            resultText = resultJSON.getString("text");
-            System.out.println(GREEN + "After: \n" + RESET + resultText);
+            resultJSON = CohereApi.callApi(content, language, api, baseURL, stream);
 
-            // If user specified the output file
-            // The result writes to the new file
-            // Name of the file specified by user
-            if (!outputFile.equals("")) {
-                Path outputPath = Path.of(projectPath + "//" + outputFile);
-                System.out.println("Output path is: " + outputPath);
-                Files.writeString(outputPath, resultText);
+            if (!stream){
+                resultText = resultJSON.getString("text");
+
+                // *** Remove code fences if present ***
+                resultText = removeCodeFences(resultText);
+
+                System.out.println(GREEN + "After: \n" + RESET + resultText);
+
+                // If user specified the output file, write the result to the file
+                if (!outputFile.equals("")) {
+                    Path outputPath = projectPath.resolve(outputFile);
+                    System.out.println("Output path is: " + outputPath);
+                    Files.writeString(outputPath, resultText);
+                }
+
+                // Handle token usage
+                if (tokenUsage && resultJSON.has("meta")) {
+                    JSONObject meta = resultJSON.getJSONObject("meta");
+                    if (meta.has("tokens")) {
+                        JSONObject tokens = meta.getJSONObject("tokens");
+                        inputTokens += tokens.getInt("input_tokens");
+                        outputTokens += tokens.getInt("output_tokens");
+                    }
+                }
+
+
+            } else {
+                if (!outputFile.isEmpty()) {
+                    resultText = resultJSON.getString("text");
+                    Path outputPath = projectPath.resolve(outputFile);
+                    System.out.println("Output path is: " + outputPath);
+                    Files.writeString(outputPath, resultText);
+                }
             }
 
             // Extract token information from resultJSON
-            inputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("input_tokens");
-            outputTokens += resultJSON.getJSONObject("meta").getJSONObject("tokens").getInt("output_tokens");
         }
 
         // If -t option is present
         // Output token information to stderr
-        if (tokenUsage) {
+        if (tokenUsage && !stream) {
             System.err.println("\n------------------------\n" +
                     "Token Information:\n" +
                     "Input Tokens: " + inputTokens + "\n" +
@@ -159,5 +187,27 @@ public class Main implements Callable<Integer> {
         int exitCode = new CommandLine(new Main()).execute(args);
         System.exit(exitCode);
 
+    }
+
+
+    private String removeCodeFences(String text) {
+        if (text.startsWith("```")) {
+            // Find the position of the first newline after the opening ```
+            int firstNewline = text.indexOf('\n');
+            if (firstNewline != -1) {
+                // Remove the opening code fence and optional language identifier
+                text = text.substring(firstNewline + 1);
+            } else {
+                // If there's no newline, remove the opening code fence
+                text = text.substring(3);
+            }
+        }
+
+        if (text.endsWith("```")) {
+            // Remove the closing code fence
+            text = text.substring(0, text.length() - 3);
+        }
+
+        return text.trim(); // Trim any leading/trailing whitespace
     }
 }
