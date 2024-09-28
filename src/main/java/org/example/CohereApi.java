@@ -46,7 +46,47 @@ public class CohereApi {
             String responseString = response.body().string();
             return new JSONObject(responseString);
         } else {
-            throw new Exception("Request failed: " + response.code() + " :c");
+            // Read the error message from the response body if available
+            String errorBody = "";
+            if (response.body() != null) {
+                errorBody = response.body().string();
+            }
+
+            // Construct a detailed error message based on the status code
+            String errorMessage = "API request failed with status code " + response.code() + ": ";
+
+            switch (response.code()) {
+                case 400:
+                    errorMessage += "Bad Request. The request was invalid or cannot be otherwise served.";
+                    break;
+                case 401:
+                    errorMessage += "Unauthorized. Authentication failed or API key is invalid.";
+                    break;
+                case 403:
+                    errorMessage += "Forbidden. The request is understood, but it has been refused.";
+                    break;
+                case 404:
+                    errorMessage += "Not Found. The requested resource could not be found.";
+                    break;
+                case 429:
+                    errorMessage += "Too Many Requests. Rate limit exceeded.";
+                    break;
+                case 500:
+                    errorMessage += "Internal Server Error. An error occurred on the server.";
+                    break;
+                case 503:
+                    errorMessage += "Service Unavailable. The service is temporarily unavailable.";
+                    break;
+                default:
+                    errorMessage += "An unexpected error occurred.";
+                    break;
+            }
+
+            if (!errorBody.isEmpty()) {
+                errorMessage += " Response body: " + errorBody;
+            }
+
+            throw new Exception(errorMessage);
         }
     }
 
