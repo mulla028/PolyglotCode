@@ -121,7 +121,7 @@ public class Main implements Callable<Integer> {
             } else if (Files.exists(projectFilePath)) {
                 content = StringifyFileContents.toString(fileNames.get(i), projectPath);
             }else {
-                throw new Exception("File doesn't exist ;c ");
+                throw new Exception("File '" + fileNames.get(i) + "' does not exist.");
             }
 
             // Invokes callApi function from CohereApi class
@@ -176,7 +176,7 @@ public class Main implements Callable<Integer> {
                     "Total Tokens: " + (inputTokens + outputTokens));
         }
 
-        return 1;
+        return 0;
     }
 
     // main function
@@ -184,7 +184,15 @@ public class Main implements Callable<Integer> {
 
         // Invokes call method and assigns to exitCode
         // System exits with the code returned to exitCode by call() method
-        int exitCode = new CommandLine(new Main()).execute(args);
+        int exitCode = new CommandLine(new Main())
+                .setExecutionExceptionHandler(new CommandLine.IExecutionExceptionHandler() {
+                    @Override
+                    public int handleExecutionException(Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult) {
+                        System.err.println("Error: " + ex.getMessage());
+                        return 1; // Non-zero exit code for errors
+                    }
+                })
+                .execute(args);
         System.exit(exitCode);
 
     }
