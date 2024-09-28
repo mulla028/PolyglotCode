@@ -44,7 +44,7 @@ public class Main implements Callable<Integer> {
     // Flags -a && --api-key to manually modify api kay
     @Option(
             names = {"-a", "--api-key"},
-            defaultValue = "I96N2q9AqvZrR3S1wcWpa8RSsiDDdnZA2By55mN7",
+            defaultValue = "",
             description = "Modifying api key manually"
     )
     private String api;
