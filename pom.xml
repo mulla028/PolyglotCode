@@ -70,11 +70,6 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <archive>
-                                <manifest>
-                                    <mainClass>org.example.Main</mainClass>  <!-- Adjust to your main class -->
-                                </manifest>
-                            </archive>
                         </configuration>
                     </execution>
                 </executions>
