@@ -16,7 +16,6 @@ on:
 
 permissions:
   contents: write
-  dependency-graph: write
 
 jobs:
   build:
