@@ -17,7 +17,7 @@ public class CohereApi {
     // language - language to translate file in
     // api - api-key
     // baseURL - baseURL default or specified by user
-    public static JSONObject callApi(String content, String language, String api, String baseURL, Boolean stream) throws Exception {
+    public static JSONObject callApi(String content, String language, String api, String baseURL, boolean stream) throws Exception {
 
         // Transform content into the JSON object
         String contentJson = JSONObject.quote(content);
@@ -26,7 +26,7 @@ public class CohereApi {
         OkHttpClient client = new OkHttpClient();
 
         // Complete user's request
-        String requestText = getMsg(false, language, contentJson);
+        String requestText = getMsg(language, contentJson);
         String json = requestText + ", \"model\": \"command-r\"";
 
 
@@ -157,9 +157,8 @@ public class CohereApi {
     }
 
     // getMsg method, completes and returns json request
-    static String getMsg(Boolean c, String language, String fileContent) {
+    static String getMsg(String language, String fileContent) {
         String comments = "";
-        if (c) { comments = "Comment line by line or block by block and "; }
         return "{ \"message\": \"" + comments + "Translate this code in " + language + "\\" + fileContent;
 
     }
