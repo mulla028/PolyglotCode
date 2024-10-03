@@ -83,6 +83,9 @@ public class Main implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
 
+        // Read config file
+        Config config = new Config();
+
         // Separate arguments, all arguments except last one
         // to be the fileNames, the last one is chosen language
         List<String> fileNames = args.subList(0, args.size() - 1);
