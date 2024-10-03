@@ -60,7 +60,7 @@ public class Main implements Callable<Integer> {
     // Flags -u && --base-url to manually modify baseURL of LLM
     @Option(
             names = {"-u", "--base-url"},
-            defaultValue = "https://api.cohere.ai/v1/chat",
+            defaultValue = "",
             description = "You may specify baseURL of api(not recommended)"
     )
     private String baseURL;
@@ -82,6 +82,17 @@ public class Main implements Callable<Integer> {
     // Function to be called in main file, using for picoCLI
     @Override
     public Integer call() throws Exception {
+
+        // Read config file
+        Config config = new Config();
+        if (api.isEmpty())
+            api = config.getApiKey();
+        if (baseURL.isEmpty())
+            baseURL = config.getBaseUrl();
+        if (config.displayToken())
+            tokenUsage = true;
+        if (config.streamResponse())
+            stream = true;
 
         // Separate arguments, all arguments except last one
         // to be the fileNames, the last one is chosen language
