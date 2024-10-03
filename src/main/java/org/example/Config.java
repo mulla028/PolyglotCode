@@ -14,7 +14,12 @@ public class Config {
                 .builder(conigFile)
                 .sync();
         config = builder.build();
-        config.load();
+
+        try {
+            config.load();
+        } catch (Exception e) {
+            throw new RuntimeException("Config file is not valid.");
+        }
 
         if (config.isEmpty())
             load_default();
