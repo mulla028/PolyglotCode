@@ -15,7 +15,7 @@ public class Config {
                 .sync();
         config = builder.build();
         config.load();
-        System.out.println(config.isEmpty());
+
         if (config.isEmpty())
             load_default();
     }
