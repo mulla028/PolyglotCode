@@ -1,7 +1,6 @@
 package org.example;
 import okhttp3.*;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,19 +26,16 @@ public class CohereApi {
 
         // Complete user's request
         String requestText = getMsg(language, contentJson);
-        String json = requestText + ", \"model\": \"command-r\"";
-
+        String jsonRequest = requestText + ", \"model\": \"command-r\"";
 
         if (stream) {
-            json += ", \"stream\": true";
+            jsonRequest += ", \"stream\": true";
         }
 
-        json += " }";
-
-//        System.out.println("JSON request is: " + json);
+        jsonRequest += " }";
 
         // Request's body
-        RequestBody body = RequestBody.create(json, MediaType.parse("application/json"));
+        RequestBody body = RequestBody.create(jsonRequest, MediaType.parse("application/json"));
 
         // Define a request sent to the server
         Request request = new Request.Builder()
@@ -121,32 +117,7 @@ public class CohereApi {
             // Construct a detailed error message based on the status code
             String errorMessage = "API request failed with status code " + response.code() + ": ";
 
-            switch (response.code()) {
-                case 400:
-                    errorMessage += "Bad Request. The request was invalid or cannot be otherwise served.";
-                    break;
-                case 401:
-                    errorMessage += "Unauthorized. Authentication failed or API key is invalid.";
-                    break;
-                case 403:
-                    errorMessage += "Forbidden. The request is understood, but it has been refused.";
-                    break;
-                case 404:
-                    errorMessage += "Not Found. The requested resource could not be found.";
-                    break;
-                case 429:
-                    errorMessage += "Too Many Requests. Rate limit exceeded.";
-                    break;
-                case 500:
-                    errorMessage += "Internal Server Error. An error occurred on the server.";
-                    break;
-                case 503:
-                    errorMessage += "Service Unavailable. The service is temporarily unavailable.";
-                    break;
-                default:
-                    errorMessage += "An unexpected error occurred.";
-                    break;
-            }
+            errorMessage += getErr(response.code());
 
             if (!errorBody.isEmpty()) {
                 errorMessage += " Response body: " + errorBody;
@@ -161,6 +132,39 @@ public class CohereApi {
         String comments = "";
         return "{ \"message\": \"" + comments + "Translate this code in " + language + "\\" + fileContent;
 
+    }
+
+    static String getErr(int responseCode) {
+        String error = "";
+
+        switch (responseCode) {
+            case 400:
+                 error += "Bad Request. The request was invalid or cannot be otherwise served.";
+                 break;
+            case 401:
+                error += "Unauthorized. Authentication failed or API key is invalid.";
+                break;
+            case 403:
+                error += "Forbidden. The request is understood, but it has been refused.";
+                break;
+            case 404:
+                error += "Not Found. The requested resource could not be found.";
+                break;
+            case 429:
+                error += "Too Many Requests. Rate limit exceeded.";
+                break;
+            case 500:
+                error += "Internal Server Error. An error occurred on the server.";
+                break;
+            case 503:
+                error += "Service Unavailable. The service is temporarily unavailable.";
+                break;
+            default:
+                error += "An unexpected error occurred.";
+                break;
+        }
+
+        return error;
     }
 }
 

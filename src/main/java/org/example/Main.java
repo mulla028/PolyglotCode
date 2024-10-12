@@ -10,18 +10,20 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 import java.util.List;
 
+import static org.example.Colors.*;
+
+
 // Declaration of picoCLI, specifying application usage
 @CommandLine.Command(
         name="./polyglot",
         version = "PolyglotCode 0.1",
         description = "A command-line tool that helps to translate code in ANY programming language.",
+
         customSynopsis = "./polyglot <files>... <language> [OPTIONS]"
 )
 // Callable Main class
 public class Main implements Callable<Integer> {
 
-    public static final String GREEN = "\u001B[32m";
-    public static final String RESET = "\u001B[0m";
 
     // CL parameters (arguments), at least 2 arguments required
     @CommandLine.Parameters(arity = "2..*",  description = "Enter file name(s) to translate followed by language name you want to translate in")
@@ -82,6 +84,8 @@ public class Main implements Callable<Integer> {
     // Function to be called in main file, using for picoCLI
     @Override
     public Integer call() throws Exception {
+
+        Colors clr = null; 
 
         // Read config file
         Config config = new Config();
@@ -145,7 +149,7 @@ public class Main implements Callable<Integer> {
                 // *** Remove code fences if present ***
                 resultText = removeCodeFences(resultText);
 
-                System.out.println(GREEN + "After: \n" + RESET + resultText);
+                System.out.println(setGreen() + "After: \n" + resetColor() + resultText);
 
                 // If user specified the output file, write the result to the file
                 if (!outputFile.equals("")) {
@@ -156,12 +160,9 @@ public class Main implements Callable<Integer> {
 
                 // Handle token usage
                 if (tokenUsage && resultJSON.has("meta")) {
-                    JSONObject meta = resultJSON.getJSONObject("meta");
-                    if (meta.has("tokens")) {
-                        JSONObject tokens = meta.getJSONObject("tokens");
-                        inputTokens += tokens.getInt("input_tokens");
-                        outputTokens += tokens.getInt("output_tokens");
-                    }
+                    Tokens tokens = Tokens.fromJson(resultJSON.getJSONObject("meta"));
+                    inputTokens += tokens.getInputTokens();
+                    outputTokens += tokens.getOutputTokens();
                 }
 
 
@@ -229,4 +230,7 @@ public class Main implements Callable<Integer> {
 
         return text.trim(); // Trim any leading/trailing whitespace
     }
+
+
 }
+
