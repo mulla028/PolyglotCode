@@ -130,7 +130,7 @@ public class CohereApi {
   }
 
   // getMsg method, completes and returns json request
-  static String getMsg(String language, String fileContent) {
+  public static String getMsg(String language, String fileContent) {
     String comments = "";
     return "{ \"message\": \""
         + comments

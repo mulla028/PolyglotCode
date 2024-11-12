@@ -8,8 +8,8 @@ public class Config {
   FileConfig config;
 
   Config() {
-    File conigFile = new File(System.getProperty("user.home"), ".polyglotcode-config.toml");
-    FileConfigBuilder builder = (FileConfigBuilder) FileConfig.builder(conigFile).sync();
+    File configFile = new File(System.getProperty("user.home"), ".polyglotcode-config.toml");
+    FileConfigBuilder builder = (FileConfigBuilder) FileConfig.builder(configFile).sync();
     config = builder.build();
 
     try {

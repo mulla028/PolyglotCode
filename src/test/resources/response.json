@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "billed_units": {
+      "output_tokens": 73,
+      "input_tokens": 86
+    },
+    "tokens": {
+      "output_tokens": 73,
+      "input_tokens": 152
+    },
+    "api_version": {
+      "version": "1"
+    }
+  },
+  "text": "```java\npublic class Main {\n    public static void main(String[] args) {\n        int a = 5;\n        int b = 10;\n        int sum = a + b;\n\n        System.out.println(\"The sum of \" + a + \" and \" + b + \" is: \" + sum);\n    }\n}```"
+}

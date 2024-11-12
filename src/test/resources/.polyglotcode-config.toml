@@ -1,0 +1,7 @@
+[output]
+display_token = false
+stream_response = false
+
+[api]
+api_key = "test-api-key"
+base_url = "https://api.cohere.ai/v1/chat"

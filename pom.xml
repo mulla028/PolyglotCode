@@ -35,11 +35,20 @@
             <artifactId>toml</artifactId>
             <version>3.8.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>3.9.2</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
-
-
-
 
     <build>
         <plugins>
@@ -112,7 +121,6 @@
                     </execution>
                 </executions>
             </plugin>
-
 
 
         </plugins>
