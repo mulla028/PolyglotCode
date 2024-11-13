@@ -1,0 +1,22 @@
+name: Checkstyle Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '22'
+
+      - name: Install dependencies and run Checkstyle
+        run: mvn checkstyle:check
