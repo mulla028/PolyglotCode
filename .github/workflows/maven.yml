@@ -63,17 +63,17 @@ jobs:
       - name: Install dependencies and run Spotless check
         run: mvn spotless:check
 
-    test:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        - name: Set up JDK
-          uses: actions/setup-java@v2
-          with:
-            distribution: 'temurin'
-            java-version: '22'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '22'
 
-        - name: Run Tests
-          run: mvn test
+      - name: Run Tests
+        run: mvn test
