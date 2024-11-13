@@ -58,6 +58,9 @@ public class CohereApi {
         // Handle streaming response
         InputStream is = response.body().byteStream();
         BufferedReader reader =
+
+
+
             new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         String line;
         StringBuilder resultBuilder = new StringBuilder();
