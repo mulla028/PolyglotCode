@@ -13,6 +13,9 @@
 
 </div>
 
+# Maven Central
+
+Instructions on how to integrate this tool to your project you may find [here](https://central.sonatype.com/artifact/io.github.mulla028/PolyglotCode)
 
 # Getting Started
 
